@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { generateStudyPlan } from './services/geminiService';
-import { StudyPlan, AppView, StudyMode } from './types';
-import { FlashcardDeck } from './components/FlashcardDeck';
-import { QuizGame } from './components/QuizGame';
-import { StrategyView } from './components/StrategyView';
-import { AiTutor } from './components/AiTutor';
-import { medicalNotes } from './data/medicalNotes';
+import { generateStudyPlan } from './services/geminiService.ts';
+import { StudyPlan, AppView, StudyMode } from './types.ts';
+import { FlashcardDeck } from './components/FlashcardDeck.tsx';
+import { QuizGame } from './components/QuizGame.tsx';
+import { StrategyView } from './components/StrategyView.tsx';
+import { AiTutor } from './components/AiTutor.tsx';
+import { medicalNotes } from './data/medicalNotes.ts';
 
 const App: React.FC = () => {
   const [view, setView] = useState<AppView>(AppView.UPLOAD);

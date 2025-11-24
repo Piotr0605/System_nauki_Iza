@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flashcard } from '../types';
+import { Flashcard } from '../types.ts';
 
 interface FlashcardDeckProps {
   cards: Flashcard[];

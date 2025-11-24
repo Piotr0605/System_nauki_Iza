@@ -1,5 +1,5 @@
 import React from 'react';
-import { DayStrategy } from '../types';
+import { DayStrategy } from '../types.ts';
 
 interface StrategyViewProps {
   strategy: DayStrategy;

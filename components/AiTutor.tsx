@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChatMessage } from '../types';
-import { chatWithTutor } from '../services/geminiService';
+import { ChatMessage } from '../types.ts';
+import { chatWithTutor } from '../services/geminiService.ts';
 
 interface AiTutorProps {
   contextContent: string;

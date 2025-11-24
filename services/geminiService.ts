@@ -1,5 +1,5 @@
-import { GoogleGenAI, Type, Schema } from "@google/genai";
-import { StudyPlan } from "../types";
+import { GoogleGenAI, Type } from "@google/genai";
+import { StudyPlan } from "../types.ts";
 
 // Safe access to process.env to prevent crashes in environments where process is undefined
 const getApiKey = () => {
@@ -13,10 +13,7 @@ const getApiKey = () => {
   return '';
 };
 
-const apiKey = getApiKey();
-const ai = new GoogleGenAI({ apiKey: apiKey });
-
-const studyPlanSchema: Schema = {
+const studyPlanSchema = {
   type: Type.OBJECT,
   properties: {
     title: { type: Type.STRING, description: "Chwytliwy tytuł planu nauki oparty na treści" },
@@ -71,6 +68,13 @@ const studyPlanSchema: Schema = {
 
 export const generateStudyPlan = async (content: string): Promise<StudyPlan> => {
   try {
+    // Initialize inside the function to avoid crash on load if key is missing
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      throw new Error("Brak klucza API. Upewnij się, że zmienna środowiskowa API_KEY jest ustawiona.");
+    }
+    const ai = new GoogleGenAI({ apiKey: apiKey });
+
     const prompt = `
       Jesteś ekspertem w nauczaniu medycyny i chirurgii. Mam dokument, który muszę opanować w dokładnie 3 dni (plus Dzień 0 na podstawy).
       
@@ -114,6 +118,10 @@ export const generateStudyPlan = async (content: string): Promise<StudyPlan> => 
 
 export const chatWithTutor = async (userMessage: string, context: string, history: any[]): Promise<string> => {
   try {
+    const apiKey = getApiKey();
+    if (!apiKey) return "Błąd: Brak klucza API.";
+    const ai = new GoogleGenAI({ apiKey: apiKey });
+
     const chat = ai.chats.create({
       model: "gemini-2.5-flash",
       history: history,
