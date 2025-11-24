@@ -1,7 +1,9 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { StudyPlan } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Safe access to process.env to prevent crashes in environments where process is undefined
+const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : '';
+const ai = new GoogleGenAI({ apiKey: apiKey });
 
 const studyPlanSchema: Schema = {
   type: Type.OBJECT,
@@ -116,8 +118,11 @@ export const chatWithTutor = async (userMessage: string, context: string, histor
       }
     });
 
-    const result = await chat.sendMessage(userMessage);
-    return result.text;
+    const result = await chat.sendMessage({ message: userMessage });
+    if (result.text) {
+        return result.text;
+    }
+    return "Nie udało się uzyskać odpowiedzi.";
   } catch (error) {
     console.error("Chat error:", error);
     return "Przepraszam, nie mogę teraz odpowiedzieć. Spróbuj ponownie.";
