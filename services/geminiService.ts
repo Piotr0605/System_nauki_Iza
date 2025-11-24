@@ -2,7 +2,18 @@ import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { StudyPlan } from "../types";
 
 // Safe access to process.env to prevent crashes in environments where process is undefined
-const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : '';
+const getApiKey = () => {
+  try {
+    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+      return process.env.API_KEY;
+    }
+  } catch (e) {
+    // Ignore error if process is not defined
+  }
+  return '';
+};
+
+const apiKey = getApiKey();
 const ai = new GoogleGenAI({ apiKey: apiKey });
 
 const studyPlanSchema: Schema = {
